@@ -1,13 +1,15 @@
 {
   "manifest_version": 2,
 
+  "name": "Smarter Duo",
+  "version": "0.1",
+  "description": "This extension makes Duolingo's choice of practice more intelligent",
+
+  "author": "Ippo",
+
   "icons": {
     "128": "book.png"
   },
-
-  "name": "Smarter Duo",
-  "description": "This extension makes Duolingo's choice of practice more intelligent",
-  "version": "1.0",
 
   "browser_action": {
     "default_icon": "book.png",
