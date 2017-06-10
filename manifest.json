@@ -1,6 +1,10 @@
 {
   "manifest_version": 2,
 
+  "icons": {
+    "128": "book.png"
+  },
+
   "name": "Smarter Duo",
   "description": "This extension makes Duolingo's choice of practice more intelligent",
   "version": "1.0",
