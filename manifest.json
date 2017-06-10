@@ -10,8 +10,15 @@
     "default_popup": "popup.html",
     "default_title": "Click here!"
   },
+
   "permissions": [
     "activeTab",
+    "storage",
     "https://www.duolingo.com/api/1/"
-  ]
+  ],
+
+  "options_ui": {
+    "page": "options.html",
+    "chrome_style": true
+  }
 }

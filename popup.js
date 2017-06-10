@@ -2,30 +2,48 @@ function renderStatus(statusText) {
   document.getElementById('status').textContent = statusText;
 }
 
-function getUserData(userName, callback, errorCallback) {
-  var duoApiUrl = 'https://www.duolingo.com/api/1';
-  var userUrl = duoApiUrl + '/users/show?username=' + userName;
-
-  var req = new XMLHttpRequest();
-  req.open('GET', userUrl);
-  req.responseType = 'json';
-  req.onload = function() {
-    var response = req.response;
-    if (!response) {
-      errorCallback('No response from Duo :(');
-      return;
-    }
-    callback(response);
-  };
-  req.onerror = function() {
-    errorCallback('Network error.');
-  };
-  req.send();
-  renderStatus("Please wait...");
+function getUsername(callback) {
+    chrome.storage.sync.get(
+        {username: ""},
+        function(items) {
+            callback(items.username);
+        }
+    );
 }
 
-function findMinStrengthSkill(request) {
-    var langData = request.language_data;
+function getUserData(userName, callback, errorCallback) {
+
+    if (!userName) {
+        errorCallback("Please set your username in the settings page");
+        return;
+    }
+
+    var duoApiUrl = 'https://www.duolingo.com/api/1';
+    var userUrl = duoApiUrl + '/users/show?username=' + userName;
+
+    var req = new XMLHttpRequest();
+    req.open('GET', userUrl);
+    req.responseType = 'json';
+
+    req.onload = function() {
+        var response = req.response;
+        if (!response) {
+            errorCallback('No response from Duo :(');
+        }
+        else {
+            callback(response);
+        }
+    };
+
+    req.onerror = function() {
+        errorCallback('Network error.');
+    };
+    req.send();
+    renderStatus("Please wait...");
+}
+
+function findMinStrengthSkill(api_response) {
+    var langData = api_response.language_data;
     if (!langData) {
         renderStatus("Could not get language data");
         return;
@@ -61,8 +79,8 @@ function findMinStrengthSkill(request) {
 
 function goToTraining(result) {
     var url = "https://www.duolingo.com/skill/" + result.language + "/" + result.skill.url_title + "/practice";
-    renderStatus(url);
     redirectTab(url);
+    window.close();
 }
 
 function redirectTab(new_url) {
@@ -70,13 +88,17 @@ function redirectTab(new_url) {
 }
 
 document.addEventListener('DOMContentLoaded', function() {
-    getUserData("Ippo343",
-    function (response) {
-        var result = findMinStrengthSkill(response);
-        if (result) {
-            goToTraining(result);
-        }
-    },
-    renderStatus
-    )
+
+    getUsername(
+        function(username) {
+            getUserData(username,
+                function (response) {
+                    var result = findMinStrengthSkill(response);
+                    if (result) {
+                        goToTraining(result);
+                    }
+                },
+                renderStatus
+            )
+    })
 });
