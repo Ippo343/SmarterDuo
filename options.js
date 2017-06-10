@@ -9,7 +9,8 @@ function save_options() {
     status.textContent = 'Options saved.';
     setTimeout(function() {
       status.textContent = '';
-    }, 750);
+      window.close();
+    }, 1000);
   });
 }
 

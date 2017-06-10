@@ -18,6 +18,8 @@ function getUserData(userName, callback, errorCallback) {
         return;
     }
 
+    document.getElementById("btnOptions").style.display = "none";
+
     var duoApiUrl = 'https://www.duolingo.com/api/1';
     var userUrl = duoApiUrl + '/users/show?username=' + userName;
 
@@ -88,6 +90,10 @@ function redirectTab(new_url) {
 }
 
 document.addEventListener('DOMContentLoaded', function() {
+
+    document.getElementById("btnOptions").addEventListener("click", function() {
+        chrome.runtime.openOptionsPage();
+    });
 
     getUsername(
         function(username) {
