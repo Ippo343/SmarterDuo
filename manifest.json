@@ -8,7 +8,7 @@
   "author": "Ippo",
 
   "icons": {
-    "128": "book.png"
+    "128": "book128.png"
   },
 
   "browser_action": {
