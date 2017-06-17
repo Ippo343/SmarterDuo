@@ -66,7 +66,7 @@ function findMinStrengthSkill(api_response) {
         var result = null;
         for (var key in skills) {
             skill = skills[key];
-            if (skill.learned && skill.strength < strength) {
+            if (skill.learned && skill.strength <= strength) {
                 result = skill;
                 strength = skill.strength;
             }
